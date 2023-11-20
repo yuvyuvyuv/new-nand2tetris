@@ -28,8 +28,13 @@ class Parser:
         input_lines = input_file.read().splitlines()
 
         # delete whitespace
-        for line in input_lines:
-            line = line.replace(" ","")
+        lines_to_delete = []
+        for i in range(len(input_lines)):
+            input_lines[i] = input_lines[i].replace(" ","")
+            if input_lines[i][0] == '#':
+                input_lines = input_lines.pop(i)
+                i += 1
+
         
 
     def has_more_commands(self) -> bool:
