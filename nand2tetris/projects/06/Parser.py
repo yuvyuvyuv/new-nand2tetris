@@ -34,6 +34,8 @@ class Parser:
             if input_lines[i][0] == '#':
                 input_lines = input_lines.pop(i)
                 i += 1
+        
+        self.current_command = 0
 
         
 
@@ -43,14 +45,15 @@ class Parser:
         Returns:
             bool: True if there are more commands, False otherwise.
         """
-        # Your code goes 
+        return self.current_command < len(self.input_lines)
         pass
 
     def advance(self) -> None:
         """Reads the next command from the input and makes it the current command.
         Should be called only if has_more_commands() is true.
         """
-        # Your code goes here!
+        if self.has_more_commands():
+            self.current_command += 1
         pass
 
     def command_type(self) -> str:
