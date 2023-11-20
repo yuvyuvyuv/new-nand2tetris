@@ -27,14 +27,15 @@ class Parser:
         
         input_lines = input_file.read().splitlines()
 
-        # delete whitespace
-        lines_to_delete = []
+        # delete whitespace 
         for i in range(len(input_lines)):
+            input_lines[i] = input_lines[:input_lines[i].find("//")]
             input_lines[i] = input_lines[i].replace(" ","")
-            if input_lines[i][0] == '#' or input_lines[i] == '':
+            if input_lines[i] == "":
                 input_lines = input_lines.pop(i)
                 i += 1
         self.input_lines = input_lines
+        
         
 
     def has_more_commands(self) -> bool:
