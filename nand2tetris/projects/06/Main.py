@@ -26,7 +26,10 @@ def assemble_file(
     # parser = Parser(input_file)
     # Note that you can write to output_file like so:
     # output_file.write("Hello world! \n")
-    pass
+    parser = parser(input_file)
+    for line in parser.input_lines:
+        print(line)
+    return
 
 
 if "__main__" == __name__:

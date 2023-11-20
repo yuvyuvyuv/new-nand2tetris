@@ -24,7 +24,13 @@ class Parser:
         # Your code goes here!
         # A good place to start is to read all the lines of the input:
         # input_lines = input_file.read().splitlines()
-        pass
+        
+        input_lines = input_file.read().splitlines()
+
+        # delete whitespace
+        for line in input_lines:
+            line = line.replace(" ","")
+        
 
     def has_more_commands(self) -> bool:
         """Are there more commands in the input?
@@ -32,7 +38,7 @@ class Parser:
         Returns:
             bool: True if there are more commands, False otherwise.
         """
-        # Your code goes here!
+        # Your code goes 
         pass
 
     def advance(self) -> None:
