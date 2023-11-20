@@ -86,9 +86,9 @@ class Code:
             mnemonic = "GEL"
         
         if 'G' in mnemonic:
-            out[0] = '1'
+            out[2] = '1'
         elif 'E' in mnemonic:
             out[1] = '1'
         elif 'L' in mnemonic:
-            out[2] = '1'
+            out[0] = '1'
         return out

@@ -82,7 +82,8 @@ class Parser:
             (Xxx). Should be called only when command_type() is "A_COMMAND" or 
             "L_COMMAND".
         """
-        command_type = command
+        command_type = self.command_type()
+        
         pass
 
     def dest(self) -> str:
