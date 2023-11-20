@@ -34,8 +34,7 @@ class Parser:
             if input_lines[i][0] == '#' or input_lines[i] == '':
                 input_lines = input_lines.pop(i)
                 i += 1
-            
-
+        self.input_lines = input_lines
         
 
     def has_more_commands(self) -> bool:
