@@ -40,7 +40,6 @@ class Parser:
         self.current_command = input_lines[0]
 
         
-        
 
     def has_more_commands(self) -> bool:
         """Are there more commands in the input?
@@ -68,10 +67,9 @@ class Parser:
             "C_COMMAND" for dest=comp;jump
             "L_COMMAND" (actually, pseudo-command) for (Xxx) where Xxx is a symbol
         """
-        line = self.command_lines[self.current_command_counter]
-        if line[0] == '@':
+        if self.current_command[0] == '@':
             return "A_COMMAND"
-        elif line[0] == '(' and line[-1] == ')':
+        elif self.current_command[0] == '(' and line[-1] == ')':
             return "L_COMMAND"
         else:
             return "C_COMMAND"
@@ -85,10 +83,9 @@ class Parser:
             "L_COMMAND".
         """
         if self.command_type == "A_COMMAND":
-            return self.command_lines[self.current_command_counter][1:]
+            return self.current_command[1:]
         elif self.command_type == "L_COMMAND":
-            return self.command_lines[self.current_self.command_type()
-        _counter][1:-1]
+            return self.current_command[1:-1]
         pass
 
     def dest(self) -> str:
