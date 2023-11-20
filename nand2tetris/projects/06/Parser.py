@@ -69,7 +69,7 @@ class Parser:
         """
         if self.current_command[0] == '@':
             return "A_COMMAND"
-        elif self.current_command[0] == '(' and line[-1] == ')':
+        elif self.current_command[0] == '(' and self.current_command[-1] == ')':
             return "L_COMMAND"
         else:
             return "C_COMMAND"
