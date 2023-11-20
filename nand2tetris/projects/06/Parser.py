@@ -35,8 +35,9 @@ class Parser:
                 input_lines = input_lines.pop(i)
                 i += 1
         
-        self.input_lines = input_lines
-        self.current_command = 0
+        self.command_lines = input_lines
+        self.current_command_counter = 0
+        self.current_command = input_lines[0]
 
         
         
@@ -47,7 +48,7 @@ class Parser:
         Returns:
             bool: True if there are more commands, False otherwise.
         """
-        return self.current_command < len(self.input_lines)
+        return self.current_command_counter < len(self.command_lines)
         pass
 
     def advance(self) -> None:
@@ -55,7 +56,8 @@ class Parser:
         Should be called only if has_more_commands() is true.
         """
         if self.has_more_commands():
-            self.current_command += 1
+            self.current_command_counter += 1
+            self.current_command = self.command_lines[self.current_command_counter]
         pass
 
     def command_type(self) -> str:
@@ -66,7 +68,7 @@ class Parser:
             "C_COMMAND" for dest=comp;jump
             "L_COMMAND" (actually, pseudo-command) for (Xxx) where Xxx is a symbol
         """
-        line = self.input_lines[self.current_command]
+        line = self.command_lines[self.current_command_counter]
         if line[0] == '@':
             return "A_COMMAND"
         elif line[0] == '(' and line[-1] == ')':
@@ -82,8 +84,11 @@ class Parser:
             (Xxx). Should be called only when command_type() is "A_COMMAND" or 
             "L_COMMAND".
         """
-        command_type = self.command_type()
-        
+        if self.command_type == "A_COMMAND":
+            return self.command_lines[self.current_command_counter][1:]
+        elif self.command_type == "L_COMMAND":
+            return self.command_lines[self.current_self.command_type()
+        _counter][1:-1]
         pass
 
     def dest(self) -> str:
@@ -92,7 +97,11 @@ class Parser:
             str: the dest mnemonic in the current C-command. Should be called 
             only when commandType() is "C_COMMAND".
         """
-        # Your code goes here!
+        command_type = self.command_type()
+        end_index = self.current_command.find('=')
+        if end_index == -1: end_index = 0
+        if command_type == "C_COMMAND":
+            return self.current_command[:end_index]
         pass
 
     def comp(self) -> str:
@@ -101,7 +110,17 @@ class Parser:
             str: the comp mnemonic in the current C-command. Should be called 
             only when commandType() is "C_COMMAND".
         """
-        # Your code goes here!
+        current_command = self.current_command
+        command_type = self.command_type()
+
+        start_index = current_command.find("=")
+        end_index = current_command(";")
+
+        if start_index == -1: start_index = 0
+        if end_index == -1: end_index = None
+
+        if command_type == "C_COMMAND":
+            return current_command[start_index:end_index]
         pass
 
     def jump(self) -> str:
@@ -110,5 +129,16 @@ class Parser:
             str: the jump mnemonic in the current C-command. Should be called 
             only when commandType() is "C_COMMAND".
         """
-        # Your code goes here!
+        current_command = self.current_command
+        command_type = self.command_type()
+
+        start_index = current_command.find(";")
+        if command_type == "C_COMMAND" and start_index != -1:
+            jmp = current_command[start_index:]
+        elif command_type == "C_COMMAND":
+            jmp = ""
+        if jmp == "":
+            return "null"
+        else:
+            return jmp       
         pass
