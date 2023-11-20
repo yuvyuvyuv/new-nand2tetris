@@ -21,11 +21,11 @@ class Code:
         """
         out = "000"
         if 'M' in mnemonic:
-            out[0] = '1'
+            out[2] = '1'
         elif 'D' in mnemonic:
             out[1] = '1'
         elif 'A' in mnemonic:
-            out[2] = '1'
+            out[0] = '1'
         return out
 
     @staticmethod

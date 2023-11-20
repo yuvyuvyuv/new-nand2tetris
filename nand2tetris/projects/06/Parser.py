@@ -35,6 +35,7 @@ class Parser:
                 input_lines = input_lines.pop(i)
                 i += 1
         
+        self.input_lines = input_lines
         self.current_command = 0
 
         
@@ -65,7 +66,13 @@ class Parser:
             "C_COMMAND" for dest=comp;jump
             "L_COMMAND" (actually, pseudo-command) for (Xxx) where Xxx is a symbol
         """
-        # Your code goes here!
+        line = self.input_lines[self.current_command]
+        if line[0] == '@':
+            return "A_COMMAND"
+        elif line[0] == '(' and line[-1] == ')':
+            return "L_COMMAND"
+        else:
+            return "C_COMMAND"
         pass
 
     def symbol(self) -> str:
@@ -75,7 +82,7 @@ class Parser:
             (Xxx). Should be called only when command_type() is "A_COMMAND" or 
             "L_COMMAND".
         """
-        # Your code goes here!
+        command_type = command
         pass
 
     def dest(self) -> str:
