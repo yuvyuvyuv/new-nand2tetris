@@ -26,10 +26,26 @@ def assemble_file(
     # parser = Parser(input_file)
     # Note that you can write to output_file like so:
     # output_file.write("Hello world! \n")
-    parser = parser(input_file)
-    for line in parser.input_lines:
-        print(line)
+    parser = Parser(input_file)
+    coder = Code()
+    while parser.has_more_commands():
+        command_out = ""
+        command_type = parser.command_type()
+        print(parser.current_command) # debug
+        if command_type == "A_COMMAND":
+            num = str(bin(int(parser.current_command[1:])).replace("0b", "").zfill(15))
+            command_out = f"0{num}"
+        elif command_type == "C_COMMAND":
+            comp = coder.comp(parser.comp())
+            dest = coder.dest(parser.dest())
+            jump = coder.jump(parser.dest())
+            command_out = f"111{comp}{dest}{jump}"
+        elif command_type == "L_COMMAND":
+            continue
+        output_file.write(command_out)
+        parser.advance()
     return
+
 
 
 if "__main__" == __name__:

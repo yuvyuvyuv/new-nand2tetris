@@ -25,19 +25,19 @@ class Parser:
         # A good place to start is to read all the lines of the input:
         # input_lines = input_file.read().splitlines()
         
-        input_lines = input_file.read().splitlines()
-
+        input_lines = input_file.readlines()
+        command_lines = []
         # delete whitespace 
-        for i in range(len(input_lines)):
-            input_lines[i] = input_lines[:input_lines[i].find("//")]
-            input_lines[i] = input_lines[i].replace(" ","")
-            if input_lines[i] == "":
-                input_lines = input_lines.pop(i)
-                i += 1
+        for line in input_lines:
+            line = line[:line.find("//")]
+            line = line.replace("\\n","")
+            line = line.replace(" ","")
+            if line != "":
+                command_lines.append(line)
         
-        self.command_lines = input_lines
+        self.command_lines = command_lines
         self.current_command_counter = 0
-        self.current_command = input_lines[0]
+        self.current_command = command_lines[0]
 
         
 
@@ -47,7 +47,7 @@ class Parser:
         Returns:
             bool: True if there are more commands, False otherwise.
         """
-        return self.current_command_counter < len(self.command_lines)
+        return self.current_command_counter + 1< len(self.command_lines)
         pass
 
     def advance(self) -> None:
@@ -94,11 +94,18 @@ class Parser:
             str: the dest mnemonic in the current C-command. Should be called 
             only when commandType() is "C_COMMAND".
         """
+        current_command = self.current_command
         command_type = self.command_type()
-        end_index = self.current_command.find('=')
-        if end_index == -1: end_index = 0
+
+        start_index = current_command.find("=")
+        end_index = current_command.find(";")
+
+        if start_index == -1: start_index = 0
+        if end_index == -1: end_index = None
+
         if command_type == "C_COMMAND":
-            return self.current_command[:end_index]
+            return current_command[start_index:end_index]
+
         pass
 
     def comp(self) -> str:
@@ -107,17 +114,13 @@ class Parser:
             str: the comp mnemonic in the current C-command. Should be called 
             only when commandType() is "C_COMMAND".
         """
-        current_command = self.current_command
         command_type = self.command_type()
-
-        start_index = current_command.find("=")
-        end_index = current_command(";")
-
-        if start_index == -1: start_index = 0
-        if end_index == -1: end_index = None
-
+        end_index = self.current_command.find('=')
+        if end_index == -1: end_index = 0
         if command_type == "C_COMMAND":
-            return current_command[start_index:end_index]
+            return self.current_command[:end_index]
+        
+                
         pass
 
     def jump(self) -> str:

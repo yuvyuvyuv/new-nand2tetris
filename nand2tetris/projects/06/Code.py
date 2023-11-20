@@ -19,14 +19,14 @@ class Code:
         Returns:
             str: 3-bit long binary code of the given mnemonic.
         """
-        out = "000"
+        out = ['0','0','0']
         if 'M' in mnemonic:
             out[2] = '1'
         elif 'D' in mnemonic:
             out[1] = '1'
         elif 'A' in mnemonic:
             out[0] = '1'
-        return out
+        return "".join(out)
 
     @staticmethod
     def comp(mnemonic: str) -> str:
@@ -75,7 +75,7 @@ class Code:
         Returns:
             str: 3-bit long binary code of the given mnemonic.
         """
-        out = "000"
+        out = ['0','0','0']
         # 'G' = positive
         # 'E' = zero
         # 'L' = negative 
@@ -91,4 +91,4 @@ class Code:
             out[1] = '1'
         elif 'L' in mnemonic:
             out[0] = '1'
-        return out
+        return "".join(out)
