@@ -31,7 +31,7 @@ class Parser:
         lines_to_delete = []
         for i in range(len(input_lines)):
             input_lines[i] = input_lines[i].replace(" ","")
-            if input_lines[i][0] == '#':
+            if input_lines[i][0] == '#' or input_lines[i] == '':
                 input_lines = input_lines.pop(i)
                 i += 1
         
