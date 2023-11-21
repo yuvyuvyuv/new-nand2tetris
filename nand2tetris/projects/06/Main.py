@@ -56,8 +56,6 @@ def assemble_file(
 
         command_out = ""
         command_type = parser.command_type()
-        print(parser.current_command, parser.current_command_counter) # debug
-
         if command_type == "A_COMMAND":
             input_name = parser.current_command[1:]
             if not input_name.isnumeric():
@@ -75,11 +73,9 @@ def assemble_file(
         elif command_type == "C_COMMAND":
             comp = coder.comp(parser.comp())
             dest = coder.dest(parser.dest())
-            jump = coder.jump(parser.dest())
-            print(parser.comp(),parser.dest(),parser.jump())
+            jump = coder.jump(parser.jump())
             command_out = f"111{comp}{dest}{jump}\n"
-        
-        print(command_out)
+
         output_file.write(command_out)
     return
 

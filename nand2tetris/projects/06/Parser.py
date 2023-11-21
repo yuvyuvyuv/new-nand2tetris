@@ -137,13 +137,11 @@ class Parser:
         current_command = self.current_command
         command_type = self.command_type()
 
-        start_index = current_command.find(";") + 1
-        if command_type == "C_COMMAND" and start_index != -1:
+        start_index = current_command.find(";")
+        if start_index == -1: return None
+        else: start_index += 1
+        if command_type == "C_COMMAND":
             jmp = current_command[start_index:]
-        elif command_type == "C_COMMAND":
-            jmp = ""
-        if jmp == "":
-            return "null"
-        else:
-            return jmp       
+        
+        return jmp       
         pass

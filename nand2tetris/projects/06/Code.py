@@ -19,14 +19,17 @@ class Code:
         Returns:
             str: 3-bit long binary code of the given mnemonic.
         """
-        out = ['0','0','0']
-        if 'M' in mnemonic:
-            out[2] = '1'
-        elif 'D' in mnemonic:
-            out[1] = '1'
-        elif 'A' in mnemonic:
-            out[0] = '1'
-        return "".join(out)
+        dest_dict = {
+            ""   : "000",
+            "M"  : "001",
+            "D"  : "010",
+            "MD" : "011",
+            "A"  : "100",
+            "AM" : "101",
+            "AD" : "110",
+            "AMD": "111"
+        }
+        return dest_dict[mnemonic]
 
     @staticmethod
     def comp(mnemonic: str) -> str:
