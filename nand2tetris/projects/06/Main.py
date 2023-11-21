@@ -76,6 +76,7 @@ def assemble_file(
             comp = coder.comp(parser.comp())
             dest = coder.dest(parser.dest())
             jump = coder.jump(parser.dest())
+            print(parser.comp(),parser.dest(),parser.jump())
             command_out = f"111{comp}{dest}{jump}\n"
         
         print(command_out)

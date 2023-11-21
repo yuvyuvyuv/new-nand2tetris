@@ -100,14 +100,10 @@ class Parser:
         current_command = self.current_command
         command_type = self.command_type()
 
-        start_index = current_command.find("=")
-        end_index = current_command.find(";")
-
-        if start_index == -1: start_index = 0
-        if end_index == -1: end_index = None
-
+        end_index = self.current_command.find('=')
+        if end_index == -1: end_index = 0
         if command_type == "C_COMMAND":
-            return current_command[start_index:end_index]
+            return current_command[:end_index]
 
         pass
 
@@ -117,13 +113,19 @@ class Parser:
             str: the comp mnemonic in the current C-command. Should be called 
             only when commandType() is "C_COMMAND".
         """
+        current_command = self.current_command
         command_type = self.command_type()
-        end_index = self.current_command.find('=')
-        if end_index == -1: end_index = 0
-        if command_type == "C_COMMAND":
-            return self.current_command[:end_index]
+
         
-                
+
+        start_index = current_command.find("=") + 1
+        end_index = current_command.find(";")
+
+        if start_index == -1: start_index = 0
+        if end_index == -1: end_index = None
+
+        if command_type == "C_COMMAND":
+            return current_command[start_index:end_index]                
         pass
 
     def jump(self) -> str:

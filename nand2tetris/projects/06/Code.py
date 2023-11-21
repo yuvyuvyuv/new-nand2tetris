@@ -38,10 +38,10 @@ class Code:
             str: the binary code of the given mnemonic.
         """
         if 'M' in mnemonic:
-            a_bit = 0
+            a_bit = 1
             mnemonic = mnemonic.replace('M', 'A')
         else:
-            a_bit = 1
+            a_bit = 0
         # TO-DO:
         # - check case "A+D" vs. "D+A"
         comp_dict = {
