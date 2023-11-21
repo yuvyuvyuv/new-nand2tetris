@@ -75,20 +75,14 @@ class Code:
         Returns:
             str: 3-bit long binary code of the given mnemonic.
         """
-        out = ['0','0','0']
-        # 'G' = positive
-        # 'E' = zero
-        # 'L' = negative 
-
-        if mnemonic == "JNE":
-            mnemonic = "JGL"
-        if mnemonic == "JMP":
-            mnemonic = "GEL"
-        
-        if 'G' in mnemonic:
-            out[2] = '1'
-        elif 'E' in mnemonic:
-            out[1] = '1'
-        elif 'L' in mnemonic:
-            out[0] = '1'
-        return "".join(out)
+        jump_dict = {
+            None: "000",
+            "JGT": "001",
+            "JEQ": "010",
+            "JGE": "011",
+            "JLT": "100",
+            "JNE": "101",
+            "JLE": "110",
+            "JMP": "111"
+        }
+        return jump_dict[mnemonic]
