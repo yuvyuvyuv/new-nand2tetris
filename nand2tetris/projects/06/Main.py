@@ -31,19 +31,18 @@ def assemble_file(
     parser = Parser(input_file)
 
     symbol_table = SymbolTable()
-    # first pass 
-
-    
+    # first pass    
+     
+    ROM_addres = 0
     while parser.has_more_commands():
         command_type = parser.command_type()
+
         if command_type == "L_COMMAND":
-            label = parser.symbol()
-            if not symbol_table.contains(label):
-                symbol_table.add_entry(label, symbol_table.avalable_memory)
-        elif command_type == "A_COMMAND":
-            symbol_table.avalable_memory += 1
-        elif command_type == "C_COMMAND":
-            symbol_table.avalable_memory += 1
+            label = parser.current_command[1:-1]
+            symbol_table.add_entry(label, ROM_addres - 1)
+        else:
+            ROM_addres += 1
+
         parser.advance()
 
     # second pass
@@ -61,6 +60,7 @@ def assemble_file(
             if not input_name.isnumeric():
                 if not symbol_table.contains(input_name):
                     symbol_table.add_entry(input_name, symbol_table.avalable_memory)
+                    symbol_table.avalable_memory += 1
                     num = str(bin(symbol_table.get_address(input_name))).replace("0b", "").zfill(15)
                     command_out = f"0{num}\n"
                 else:

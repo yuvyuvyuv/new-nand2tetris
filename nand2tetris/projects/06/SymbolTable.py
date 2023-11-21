@@ -55,6 +55,7 @@ class SymbolTable:
         self.symbol_table[symbol] = address
         pass
 
+
     def contains(self, symbol: str) -> bool:
         """Does the symbol table contain the given symbol?
 
