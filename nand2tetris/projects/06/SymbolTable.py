@@ -42,6 +42,7 @@ class SymbolTable:
                         "SCREEN": 16384,
                         "KBD": 24576}
         self.symbol_table = symbol_table
+        self.avalable_memory = 16
         pass
 
     def add_entry(self, symbol: str, address: int) -> None:

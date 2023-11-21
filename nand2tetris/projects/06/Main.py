@@ -26,24 +26,60 @@ def assemble_file(
     # parser = Parser(input_file)
     # Note that you can write to output_file like so:
     # output_file.write("Hello world! \n")
+
+
     parser = Parser(input_file)
+
+    symbol_table = SymbolTable()
+    # first pass 
+
+    
+    while parser.has_more_commands():
+        command_type = parser.command_type()
+        if command_type == "L_COMMAND":
+            label = parser.symbol()
+            if not symbol_table.contains(label):
+                symbol_table.add_entry(label, symbol_table.avalable_memory)
+        elif command_type == "A_COMMAND":
+            symbol_table.avalable_memory += 1
+        elif command_type == "C_COMMAND":
+            symbol_table.avalable_memory += 1
+        parser.advance()
+
+    # second pass
+    parser.current_command_counter = 0
+    #parser.advance()
+
     coder = Code()
     while parser.has_more_commands():
+        parser.advance()
+
         command_out = ""
         command_type = parser.command_type()
-        print(parser.current_command) # debug
+        print(parser.current_command, parser.current_command_counter) # debug
+
         if command_type == "A_COMMAND":
-            num = str(bin(int(parser.current_command[1:])).replace("0b", "").zfill(15))
-            command_out = f"0{num}"
+            input_name = parser.current_command[1:]
+            if not input_name.isnumeric():
+                if not symbol_table.contains(input_name):
+                    symbol_table.add_entry(input_name, symbol_table.avalable_memory)
+                    num = str(bin(symbol_table.get_address(input_name))).replace("0b", "").zfill(15)
+                    command_out = f"0{num}\n"
+                else:
+                    num = str(bin(symbol_table.get_address(input_name))).replace("0b", "").zfill(15)
+                    command_out = f"0{num}\n"
+            else:
+                num = str(bin(int(input_name)).replace("0b", "").zfill(15))
+                command_out = f"0{num}\n"
+        
         elif command_type == "C_COMMAND":
             comp = coder.comp(parser.comp())
             dest = coder.dest(parser.dest())
             jump = coder.jump(parser.dest())
-            command_out = f"111{comp}{dest}{jump}"
-        elif command_type == "L_COMMAND":
-            continue
+            command_out = f"111{comp}{dest}{jump}\n"
+        
+        print(command_out)
         output_file.write(command_out)
-        parser.advance()
     return
 
 

@@ -31,14 +31,17 @@ class Parser:
         for line in input_lines:
             line = line[:line.find("//")]
             line = line.replace("\\n","")
+            line = line.replace("\\t","")
             line = line.replace(" ","")
             if line != "":
                 command_lines.append(line)
         
         self.command_lines = command_lines
         self.current_command_counter = 0
-        self.current_command = command_lines[0]
-
+        if command_lines != []:
+            self.current_command = command_lines[0]
+        else:
+            self.current_command = None
         
 
     def has_more_commands(self) -> bool:
@@ -47,7 +50,7 @@ class Parser:
         Returns:
             bool: True if there are more commands, False otherwise.
         """
-        return self.current_command_counter + 1< len(self.command_lines)
+        return self.current_command_counter < len(self.command_lines)
         pass
 
     def advance(self) -> None:
@@ -55,8 +58,8 @@ class Parser:
         Should be called only if has_more_commands() is true.
         """
         if self.has_more_commands():
-            self.current_command_counter += 1
             self.current_command = self.command_lines[self.current_command_counter]
+            self.current_command_counter += 1
         pass
 
     def command_type(self) -> str:
