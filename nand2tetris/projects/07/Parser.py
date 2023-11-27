@@ -52,10 +52,6 @@ class Parser:
         Args:
             input_file (typing.TextIO): input file.
         """
-        # Your code goes here!
-        # A good place to start is to read all the lines of the input:
-        # input_lines = input_file.read().splitlines()
-
         
         input_lines = input_file.readlines()
         command_lines = []
@@ -63,7 +59,7 @@ class Parser:
         for line in input_lines:
             line = line[:line.find("//")]
             line = " ".join(line.split())
-            if line != "":
+            if line != "" and line != " ":
                 command_lines.append(line)
         
         self.command_lines = command_lines
@@ -103,7 +99,7 @@ class Parser:
             "C_RETURN", "C_CALL".
         """
         c_arithmetic_words = ["add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"]
-        if any(x in self.current_command for x in c_arithmetic_words):
+        if self.current_command.split()[0] in c_arithmetic_words:
             return "C_ARITHMETIC"
         elif "push" in self.current_command:
             return "C_PUSH"
@@ -130,7 +126,10 @@ class Parser:
             "C_ARITHMETIC", the command itself (add, sub, etc.) is returned. 
             Should not be called if the current command is "C_RETURN".
         """
-        # Your code goes here!
+        if self.command_type() == "C_ARITHMETIC":
+            return self.current_command
+        elif self.command_type() != "C_RETURN":
+            return self.current_command.split()[1]
         pass
 
     def arg2(self) -> int:
@@ -140,5 +139,7 @@ class Parser:
             called only if the current command is "C_PUSH", "C_POP", 
             "C_FUNCTION" or "C_CALL".
         """
-        # Your code goes here!
+        two_arg_funcs = ["C_PUSH", "C_POP", "C_FUNCTION" , "C_CALL"]
+        if self.command_type() in two_arg_funcs:
+            return self.current_command.split()[2]
         pass

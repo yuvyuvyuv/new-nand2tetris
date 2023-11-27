@@ -20,6 +20,7 @@ class CodeWriter:
         # Your code goes here!
         # Note that you can write to output_stream like so:
         # output_stream.write("Hello world! \n")
+        self.output = output_stream
         pass
 
     def set_file_name(self, filename: str) -> None:
@@ -68,8 +69,51 @@ class CodeWriter:
         # be translated to the assembly symbol "Xxx.i". In the subsequent
         # assembly process, the Hack assembler will allocate these symbolic
         # variables to the RAM, starting at address 16.
-        pass
 
+        # argument, local, static, constant, this, that, pointer, temp
+        if command == "C_PUSH":
+            # set D to correct input
+            match segment:
+                case "argument":
+                    pass
+                case "local":
+                    pass
+                case "static":
+                    pass
+                case "constant":
+                    pass
+                case "this":
+                    pass
+                case "that":
+                    pass
+                case "pointer":
+                    pass
+                case "temp":
+                    pass
+            if segment == "constant":
+                self.output.write("@"+str(index)+"\n")
+                self.output.write("D=A")
+            # push D
+            self.output.write("@SP\n") # load SP
+            self.output.write("A=M\n") # set A to RAM[SP]
+            self.output.write("M=D\n") # M = computaion
+            self.output.write("@SP\n") # increase SP 
+            self.output.write("M=M+1\n") # by 1
+
+        pass
+    def write_C_op(self, dest, comp, jump = None):
+        if dest != None:
+            self.output.write(str(dest)+"=")
+        self.output.write(str(comp))
+        if jump != None:
+            self.output.write(";"+str(jump))
+        self.output.write("\n")
+
+        pass
+    def write_A_op(self, addr):
+        self.output.write("@"+str(addr)+"\n")
+        pass
+    
     def write_label(self, label: str) -> None:
         """Writes assembly code that affects the label command. 
         Let "Xxx.foo" be a function within the file Xxx.vm. The handling of
