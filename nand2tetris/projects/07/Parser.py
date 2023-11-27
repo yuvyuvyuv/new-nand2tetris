@@ -55,6 +55,23 @@ class Parser:
         # Your code goes here!
         # A good place to start is to read all the lines of the input:
         # input_lines = input_file.read().splitlines()
+
+        
+        input_lines = input_file.readlines()
+        command_lines = []
+        # delete whitespace 
+        for line in input_lines:
+            line = line[:line.find("//")]
+            line = " ".join(line.split())
+            if line != "":
+                command_lines.append(line)
+        
+        self.command_lines = command_lines
+        self.current_command_counter = 0
+        if command_lines != []:
+            self.current_command = command_lines[0]
+        else:
+            self.current_command = None
         pass
 
     def has_more_commands(self) -> bool:
@@ -63,7 +80,7 @@ class Parser:
         Returns:
             bool: True if there are more commands, False otherwise.
         """
-        # Your code goes here!
+        return self.current_command_counter < len(self.command_lines)
         pass
 
     def advance(self) -> None:
@@ -71,7 +88,9 @@ class Parser:
         command. Should be called only if has_more_commands() is true. Initially
         there is no current command.
         """
-        # Your code goes here!
+        if self.has_more_commands():
+            self.current_command = self.command_lines[self.current_command_counter]
+            self.current_command_counter += 1
         pass
 
     def command_type(self) -> str:
@@ -83,7 +102,25 @@ class Parser:
             "C_PUSH", "C_POP", "C_LABEL", "C_GOTO", "C_IF", "C_FUNCTION",
             "C_RETURN", "C_CALL".
         """
-        # Your code goes here!
+        c_arithmetic_words = ["add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"]
+        if any(x in self.current_command for x in c_arithmetic_words):
+            return "C_ARITHMETIC"
+        elif "push" in self.current_command:
+            return "C_PUSH"
+        elif "pop" in self.current_command:
+            return "C_POP"
+        elif "label" in self.current_command:
+            return "C_LABEL"
+        elif "goto" in self.current_command:
+            return "C_GOTO"
+        elif "if" in self.current_command:
+            return "C_IF"
+        elif "function" in self.current_command:
+            return "C_FUNCTION"
+        elif "return" in self.current_command:
+            return "C_RETURN"
+        elif "call" in self.current_command:
+            return "C_CALL"
         pass
 
     def arg1(self) -> str:
