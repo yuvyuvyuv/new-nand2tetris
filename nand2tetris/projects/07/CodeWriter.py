@@ -21,6 +21,18 @@ class CodeWriter:
         # Note that you can write to output_stream like so:
         # output_stream.write("Hello world! \n")
         self.output = output_stream
+        self.symbols = {
+            "add": "M=D+M",
+            "sub": "M=M-D",
+            "and": "M=M&D",
+            "or": "M=M|D",
+            "neg": "M=-M",
+            "not": "M=!M",
+            "eq": "D;JEQ",
+            "gt": "D;JGT",
+            "lt": "D;JLT"
+        }
+        self.label_counter = 0
         pass
 
     def set_file_name(self, filename: str) -> None:
@@ -52,7 +64,47 @@ class CodeWriter:
         Args:
             command (str): an arithmetic command.
         """
-        # Your code goes here!
+        output = []
+        if command in ["add", "sub", "and", "or"]:
+            # Pop Stack into D.
+            output.append("@SP")
+            output.append("AM=M-1")
+            output.append("D=M")
+            # Access to Stack[-1]
+            output.append("@SP")
+            output.append("A=M-1")
+            # Use the Arithmetic Operator
+            output.append(self.symbols[command])
+        elif command in ["neg", "not"]:
+            # Access to Stack[-1]
+            output.append("@SP")
+            output.append("A=M-1")
+            output.append(self.symbols[command])
+        elif command in ["eq", "gt", "lt"]:
+            jump_label = "CompLabel" + str(self.label_counter)
+            self.label_counter += 1
+            # Pop Stack into D.
+            output.append("@SP")
+            output.append("AM=M-1")
+            output.append("D=M")
+            # Access to Stack[-1]
+            output.append("@SP")
+            output.append("A=M-1")
+            # Calculate the difference
+            output.append("D=M-D")
+            # Set the Stack to True in anticipation.
+            output.append("M=-1")
+            # Load the jump label into A.
+            output.append("@" + jump_label)
+            # Jump if the statement is True.
+            # Else update the Stack to False.
+            output.append(self.symbols[command])
+            # Set the Stack[-1] to False
+            output.append("@SP")
+            output.append("A=M-1")
+            output.append("M=0")
+            # Jump label for the True state.
+            output.append("(" + jump_label + ")")
         pass
 
     def write_push_pop(self, command: str, segment: str, index: int) -> None:
