@@ -41,6 +41,7 @@ class CodeWriter:
             "temp": "@5"
         }
         self.label_counter = 0
+        self.set_file_name(output_stream.name)
 
     def set_file_name(self, filename: str) -> None:
         """Informs the code writer that the translation of a new VM file is 
@@ -60,7 +61,7 @@ class CodeWriter:
         # the function "translate_file" in Main.py using python's os library,
         # For example, using code similar to:
         # input_filename, input_extension = os.path.splitext(os.path.basename(input_file.name))
-        self.file_name = filename
+        self.file_name = filename[filename.rindex("\\") + 1:filename.rindex('.')]
 
     def write_arithmetic(self, command: str) -> None:
         """Writes assembly code that is the translation of the given 
@@ -215,20 +216,9 @@ class CodeWriter:
         output.append("")
 
         for line in output:
-            print(line)
             self.output.write(f"{line}\n")
 
         
-    def write_C_op(self, dest, comp, jump = None):
-        if dest != None:
-            self.output.write(str(dest)+"=")
-        self.output.write(str(comp))
-        if jump != None:
-            self.output.write(";"+str(jump))
-        self.output.write("\n")
-
-    def write_A_op(self, addr):
-        self.output.write("@"+str(addr)+"\n")
     
     def write_label(self, label: str) -> None:
         """Writes assembly code that affects the label command. 
