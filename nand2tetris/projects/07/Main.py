@@ -40,8 +40,6 @@ def translate_file(
             argument1 = parser.arg1()
             argument2 = parser.arg2()
             code_writer.write_push_pop(command_type, argument1, argument2)
-        else:
-            raise NameError("Unsupported Command Type")
 
     # Close the output file before exiting.
     code_writer.output.close()

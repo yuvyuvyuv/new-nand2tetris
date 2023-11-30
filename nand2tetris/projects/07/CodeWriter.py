@@ -100,7 +100,6 @@ class CodeWriter:
             output.append("A=M-1")
             # Calculate the difference
             output.append("D=M-D")
-            # Set the Stack to True in anticipation.
             output.append("M=-1")
             # Load the jump label into A.
             output.append("@" + jump_label)
@@ -175,10 +174,7 @@ class CodeWriter:
                 output.append("@SP")
                 output.append("M=M+1")
         elif command == "C_POP":
-            if segment == "constant":
-                # Not a valid command.
-                raise NameError("Cannot Pop Constant Segment")
-            elif segment in ["local", "argument", "this", "that", "temp", "pointer"]:
+            if segment in ["local", "argument", "this", "that", "temp", "pointer"]:
                 # Put the index value into D.
                 output.append("@" + str(index))
                 output.append("D=A")
@@ -212,8 +208,6 @@ class CodeWriter:
                 # Put D value into static address.
                 output.append("M=D")
 
-        # Add an empty line for debug purposes.
-        output.append("")
 
         for line in output:
             self.output.write(f"{line}\n")
